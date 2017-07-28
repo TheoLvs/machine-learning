@@ -1,12 +1,14 @@
-# Machine Learning
+# Reinforcement Learning
 
-<img src ="https://www.researchgate.net/profile/Antonietta_Mira/publication/276259852/figure/fig5/AS:267861146992665@1440874482372/Figure-5-Zachary-karate-club-network-graph.png"/>
 
-Various case studies on : 
-- Machine Learning & Deep Leaning
-- Networks analysis
-- Computer Vision
-- Natural Language Processing 
-- Reinforcement Learning
 
+## Case studies
+
+1. Pickup problem (2016-07)
+2. Multi Armed Bandit (2017-05)
+3. Tic Tac Toe (2017-06)
+
+
+## References
+TBD
 
