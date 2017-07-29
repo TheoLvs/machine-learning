@@ -25,7 +25,7 @@ import time
 
 from IPython.display import clear_output
 from tqdm import tqdm
-
+from collections import Counter
 
 # Deep Learning (Keras, Tensorflow)
 import tensorflow as tf
@@ -506,7 +506,7 @@ class AI_Rules_Agent(Agent):
 
 
 class AI_RL_Agent(Agent):
-    def __init__(self,new_model = True,lr = 0.1,epsilon = 0.2,gamma = 0.5):
+    def __init__(self,model = None,lr = 0.1,epsilon = 0.2,gamma = 0.5,H = 100):
 
         # PARAMETERS INITIALIZATION
         self.learning_rate = lr
@@ -521,14 +521,17 @@ class AI_RL_Agent(Agent):
         self.probas = []
 
         # LOADING NEURAL NETWORK CORE MODEL
-        if new_model:
-            self.model = self.load_model()
+        if model is None:
+            self.model = self.load_default_model(H = H)
+        else:
+            self.model = model
 
 
 
 
 
-    def load_model(self,new_brain = True,H = 100):
+    def load_default_model(self,H = 100):
+
 
         # Define the model
         model = Sequential()
@@ -812,3 +815,61 @@ class Game(object):
                 self.agent1.train()
                 self.agent2.train()
 
+
+
+    def plot_running_rewards(self,player1 = False,player2 = False):
+
+        if player1 or player2:
+            plt.figure(figsize = (15,4))
+
+            if player1:
+                plt.plot(np.cumsum(self.agent1.running_rewards)/np.array(range(1,len(self.agent1.running_rewards)+1)),label = "Player 1")
+
+            if player2:
+                plt.plot(np.cumsum(self.agent2.running_rewards)/np.array(range(1,len(self.agent2.running_rewards)+1)),label = "Player 2")
+
+            plt.legend()
+            plt.show()
+
+
+
+    def analyze_rewards_set(self,x):
+        length = len(x)
+        count = Counter(x)
+        games_won = count[2]/float(length)
+        games_draw = count[-1]/float(length)
+        games_lost = count[-2]/float(length)
+        return games_won,games_draw,games_lost
+
+
+
+    def analyze_rolling_rewards(self,rewards,rollback = 10):
+        output = {"won":[],"draw":[],"won_draw":[],"lost":[]}
+        for i in range(len(rewards)-rollback+1):
+            x = rewards[i:i+rollback]
+            won,draw,lost = self.analyze_rewards_set(x)
+            output["won"].append(won)
+            output["draw"].append(draw)
+            output["lost"].append(lost)
+            output["won_draw"].append(won + draw)
+            
+        return output
+
+
+
+    def plot_results_during_training(self,rewards,rollback = 10,fields = ["won","draw","lost"]):
+
+        plt.figure(figsize = (15,4))
+        plt.title("Results in % for {} consecutive games".format(rollback))
+
+        output = self.analyze_rolling_rewards(rewards,rollback)
+        output = {k:v for k,v in output.items() if k in fields}
+
+        possible_fields = ["won","draw","won_draw","lost"]
+        fields = [k for k in possible_fields if k in fields]
+        for k in fields:
+            plt.plot(output[k],label = "% {}".format(k))
+
+        plt.legend()
+        plt.ylim([0,1])
+        plt.show()
