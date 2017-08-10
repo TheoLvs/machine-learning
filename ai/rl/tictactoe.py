@@ -472,7 +472,7 @@ class AI_Rules_Agent(Agent):
 
 
         # DEFENSE
-        # If the oppositie player has already two marks, place the third to block the winning coup
+        # If the opposite player has already two marks, place the third to block the winning coup
         move = self.find_move_on_value_by_risk(grid,self.get_other_value(),risk = 2)
         if move is not None:
             return None,None,None,move
