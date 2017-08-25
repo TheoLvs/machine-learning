@@ -27,7 +27,7 @@ from keras.layers import Dense, Activation
 from keras.optimizers import SGD, RMSprop
 
 
-from alan.artificial_intelligence.reinforcement_learning.algorithms import Brain
+from ai.rl.algorithms import Brain
 
 
 
