@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from preprocessing import *
+from ekimetrics.computer_vision.preprocessing import *
 import tensorflow as tf
 
 print(">> LOADING TENSORFLOW MODEL")
