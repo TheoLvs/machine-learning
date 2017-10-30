@@ -3,6 +3,9 @@ import cv2
 from ekimetrics.computer_vision.preprocessing import *
 import tensorflow as tf
 
+
+# https://github.com/datitran/object_detector_app/blob/master/object_detection_multithreading.py
+
 print(">> LOADING TENSORFLOW MODEL")
 from ekimetrics.computer_vision import object_detection as od
 model_path = "C:/git/models/object_detection/coco/frozen_inference_graph.pb"
