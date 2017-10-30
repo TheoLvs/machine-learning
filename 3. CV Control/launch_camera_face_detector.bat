@@ -1,3 +1,3 @@
-python camera_tensorflow_detector.py
+python camera_face_detector.py
 
 pause
