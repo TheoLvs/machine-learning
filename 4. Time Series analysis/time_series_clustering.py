@@ -179,11 +179,11 @@ class Companies(object):
                 time.sleep(10)
                 skipped.append(ticker)
 
-        i = 0
-        while len(skipped) > 0 and i <= max_retries:
+        for i in range(max_retries):
             new_data,skipped = self.get_data(skipped,alpha = alpha,max_retries = 0)
             data.extend(new_data)
-            i += 1
+            if len(skipped) == 0:
+                break
 
         return data,skipped
 
