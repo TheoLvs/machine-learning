@@ -163,6 +163,8 @@ class Companies(object):
     # IO
 
     def save_as_json(self,json_path):
+        """Save object as json
+        """
         data = {}
         for company in self:
 
@@ -175,6 +177,8 @@ class Companies(object):
 
 
     def load_json_data(self,json_path):
+        """Load json data object
+        """
         json_data = json.loads(open(json_path,"r").read())
         
         companies = []
@@ -240,6 +244,8 @@ class Companies(object):
     # VISUALIZATION
     
     def plot(self,tickers = None,variable = "close"):
+        """Plot using plotly the set of tickers stock evolution
+        """
         data = self.get_dataframe(tickers,variable)
         fig = data.iplot(world_readable=True,asFigure=True)
         iplot(fig)
