@@ -74,6 +74,26 @@ class Company(object):
         
     def __repr__(self):
         return self.ticker
+
+
+    def get_data(self,variable = "close",normalization = True):
+        data = self.data[variable].copy()
+        data /= data.max()
+        return data
+
+
+    def get_mono_image(self,variable = "close",window = 7):
+        x = self.get_data(variable,normalization = True).as_matrix()
+        x = split_array(x,window = window)
+        return x
+
+
+    def show_mono_image(self,variable = "close",window = 7):
+        x = self.get_mono_image(variable,window)
+        plt.imshow(x)
+        plt.title(self.ticker)
+        plt.show()
+
     
     def plot(self,variable = "close"):
         if type(variable) != list: variable = [variable]
@@ -83,6 +103,13 @@ class Company(object):
 
 
 
+
+
+def split_array(x,window = 7):
+    x = [x[i*window:(i+1)*window] for i in range(int(len(x)/window)+1)]
+    x = [y for y in x if len(y) == window]
+    x = np.vstack(x)
+    return x
 
 
 
@@ -122,7 +149,11 @@ class Companies(object):
     
     def __getitem__(self,key):
         if type(key) != list : key = [key]
-        return [company for company in self if company.ticker in key]
+        companies = [company for company in self if company.ticker in key]
+        if len(companies) == 1:
+            return companies[0]
+        else:
+            return companies
     
     
 
