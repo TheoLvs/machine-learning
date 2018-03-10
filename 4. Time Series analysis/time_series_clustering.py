@@ -240,6 +240,11 @@ class Companies(object):
     
 
 
+    def build_mono_image_dataset(self):
+        pass
+
+
+
     #--------------------------------------------------------------------------
     # VISUALIZATION
     
