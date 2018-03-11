@@ -264,3 +264,56 @@ class Companies(object):
         data = self.get_dataframe(tickers,variable)
         fig = data.iplot(world_readable=True,asFigure=True)
         iplot(fig)
+
+
+
+
+#=============================================================================================================================
+# CNN AUTOENCODER PyTorch
+#=============================================================================================================================
+
+
+
+import torch
+import torchvision
+from torch import nn
+from torch.autograd import Variable
+from torch.utils.data import DataLoader
+from torchvision import transforms
+from torchvision.utils import save_image
+
+
+
+class Autoencoder(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Conv2d(14, 7, 1, stride=1, padding=1),  # b, 16, 10, 10
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=1),  # b, 16, 5, 5
+            nn.Conv2d(7, 2, 1, stride=1, padding=1),  # b, 8, 3, 3
+            nn.ReLU(True),
+            nn.MaxPool2d(2, stride=1)  # b, 8, 2, 2
+        )
+        self.decoder = nn.Sequential(
+            nn.ConvTranspose2d(2, 7, 1, stride=1),  # b, 16, 5, 5
+            nn.ReLU(True),
+            nn.ConvTranspose2d(7, 14, 1, stride=1, padding=1),  # b, 8, 15, 15
+            # nn.ReLU(True),
+            # nn.ConvTranspose2d(8, 1, 2, stride=2, padding=1),  # b, 1, 28, 28
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        if type(x) is type(np.array([])):
+            x = Variable(torch.FloatTensor(x))
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
+    
+    
+    def encode(self,x):
+        if type(x) is type(np.array([])):
+            x = Variable(torch.FloatTensor(x))
+        x = self.encoder(x)
+        return x
