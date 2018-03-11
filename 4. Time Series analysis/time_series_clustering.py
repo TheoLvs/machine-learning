@@ -134,6 +134,8 @@ class Companies(object):
             self.data = self.load_json_data(json_path)
 
 
+        self.data = [company for company in self if len(company.data) >= 100]
+
 
     #--------------------------------------------------------------------------
     # OPERATORS
@@ -148,13 +150,16 @@ class Companies(object):
         return iter(self.data)
     
     def __getitem__(self,key):
-        if type(key) != list : key = [key]
-        companies = [company for company in self if company.ticker in key]
-        if len(companies) == 1:
-            return companies[0]
+        if type(key) == int:
+            return self.data[key]
         else:
-            return companies
-    
+            if type(key) != list : key = [key]
+            companies = [company for company in self if company.ticker in key]
+            if len(companies) == 1:
+                return companies[0]
+            else:
+                return companies
+        
     
 
 
@@ -231,7 +236,8 @@ class Companies(object):
             companies = self[tickers]
         else:
             companies = self.data       
-        data = pd.concat([company.data[[variable]].rename(columns = {variable:company.ticker}) for company in self],axis = 1)
+
+        data = pd.concat([company.data[[variable]].rename(columns = {variable:company.ticker}) for company in companies],axis = 1)
         
         if normalization:
             data /= data.max(axis = 0)
@@ -241,7 +247,11 @@ class Companies(object):
 
 
     def build_mono_image_dataset(self):
-        pass
+        """Build mono image dataset
+        """
+        images = [np.expand_dims(company.get_mono_image(),axis = 0) for company in self]
+        images = np.vstack(images)
+        return images
 
 
 
