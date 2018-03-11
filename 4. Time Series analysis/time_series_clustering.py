@@ -97,7 +97,7 @@ class Company(object):
     
     def plot(self,variable = "close"):
         if type(variable) != list: variable = [variable]
-        fig = self.data[variable].iplot(world_readable=True,asFigure=True)
+        fig = self.data[variable].iplot(world_readable=False,asFigure=True)
         iplot(fig)
 
 
@@ -262,7 +262,7 @@ class Companies(object):
         """Plot using plotly the set of tickers stock evolution
         """
         data = self.get_dataframe(tickers,variable)
-        fig = data.iplot(world_readable=True,asFigure=True)
+        fig = data.iplot(world_readable=False,asFigure=True)
         iplot(fig)
 
 
@@ -311,7 +311,7 @@ class Autoencoder(nn.Module):
         x = self.decoder(x)
         return x
     
-    
+
     def encode(self,x):
         if type(x) is type(np.array([])):
             x = Variable(torch.FloatTensor(x))
