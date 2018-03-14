@@ -105,6 +105,8 @@ class Company(object):
 
 
 
+
+
 def split_array(x,window = 7):
     x = [x[i*window:(i+1)*window] for i in range(int(len(x)/window)+1)]
     x = [y for y in x if len(y) == window]
